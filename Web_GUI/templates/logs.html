@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Logs</title>
+    <style>
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator[data-status="true"] {
+            background-color: green;
+        }
+
+        .status-indicator[data-status="false"] {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Son SQL Kayıtları</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Server_IP</th>
+                <th>Client_IP</th>
+                <th>Protokol</th>
+                <th>Durum</th>
+                <th>Geçen Süre</th>
+                <th>Server_Port</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log[6] }}</td>
+                <td>{{ log[7] }}</td>
+                <td>{{ log[1] }}</td>
+                <td>
+                    <div class="status-indicator" data-status="{{ log[8] | lower }}"></div>
+                </td>
+                <td>{{ log[9] }}</td>
+                <td>{{ log[10] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button onclick="window.location.href='/'">Geri Dön</button>
+</body>
+</html>

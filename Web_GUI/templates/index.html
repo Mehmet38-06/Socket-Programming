@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client & SQL Test</title>
+    <style>
+        body {
+            background-color: grey;
+        }
+        .status-green {
+            background-color: green;
+        }
+        .status-red {
+            background-color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Client Başlat/Durdur ve SQL Testi</h1>
+    <button id="startClientBtn">Client Başlat</button>
+    <button id="stopClientBtn">Client Durdur</button>
+    <button id="testSQLBtn">SQL Bağlantısını Test Et</button>
+    <button id="showLogsBtn" onclick="window.location.href='/logs'">SQL Kayıtlarını Göster</button>
+    <button id="showIpPortFormBtn">Sunucu IP ve Port Gir</button>
+
+    <div id="ipPortForm" class="hidden">
+        <h2>Sunucu IP ve Port Bilgilerini Girin</h2>
+        <form id="ipPortForm">
+            <label for="ip">Sunucu IP:</label>
+            <input type="text" id="ip" name="ip"><br><br>
+            
+            <label for="tcpPort">TCP Port:</label>
+            <input type="text" id="tcpPort" name="tcpPort"><br><br>
+            
+            <label for="udpPort">UDP Port:</label>
+            <input type="text" id="udpPort" name="udpPort"><br><br>
+            
+            <button type="submit">Kaydet</button>
+        </form>
+    </div>
+
+    <p id="sqlStatus"></p>
+
+    <script>
+        document.getElementById('startClientBtn').addEventListener('click', function() {
+            fetch('/start_client', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                document.body.className = data.color === 'green' ? 'status-green' : 'status-red';
+                alert('Client Başlatma Durumu: ' + (data.status ? 'Başarılı' : 'Başarısız'));
+            });
+        });
+
+        document.getElementById('stopClientBtn').addEventListener('click', function() {
+            fetch('/stop_client', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.stop_status);
+            });
+        });
+
+        document.getElementById('testSQLBtn').addEventListener('click', function() {
+            fetch('/test_sql', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('sqlStatus').textContent = data.sql_status;
+            });
+        });
+
+        document.getElementById('showIpPortFormBtn').addEventListener('click', function() {
+            document.getElementById('ipPortForm').classList.toggle('hidden');
+        });
+
+        document.getElementById('ipPortForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const ip = document.getElementById('ip').value;
+            const tcpPort = document.getElementById('tcpPort').value;
+            const udpPort = document.getElementById('udpPort').value;
+
+        fetch('/save-server', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ip: ip, tcp_port: tcpPort, udp_port: udpPort })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            document.getElementById('ipPortForm').reset();
+            document.getElementById('ipPortForm').classList.add('hidden');
+        });
+    });
+    </script>
+</body>
+</html>
