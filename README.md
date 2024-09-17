@@ -1,6 +1,6 @@
 (EN)
 
-In this project, the socket programming task has been completed. I would like to thank @simgekocak [simgekocak](https://github.com/simgekocak), whom I worked with during this project. The project was designed to provide communication between a client and multiple servers. The data generated during this communication, such as the server access time, the status of the packets sent, and the client and server IP addresses, were recorded in the SQL database. A web interface was created to facilitate access to these records. In addition, a system was created that could send notifications to the client side via SMS API if the server could not be reached due to any error. 
+In this project, the socket programming task has been completed. I would like to thank [simgekocak](https://github.com/simgekocak), whom I worked with during this project. The project was designed to provide communication between a client and multiple servers. The data generated during this communication, such as the server access time, the status of the packets sent, and the client and server IP addresses, were recorded in the SQL database. A web interface was created to facilitate access to these records. In addition, a system was created that could send notifications to the client side via SMS API if the server could not be reached due to any error. 
 
 (TR)
 
